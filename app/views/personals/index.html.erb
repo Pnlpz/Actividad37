@@ -1,11 +1,13 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Personals</h1>
+<h1>Listado Personal</h1>
 
 <table>
   <thead>
     <tr>
-      <th>Name</th>
+      <th>Nombre</th>
+      <th>Proyectos Actuales</th>
+      <th>Asignar a:</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -14,9 +16,15 @@
     <% @personals.each do |personal| %>
       <tr>
         <td><%= personal.name %></td>
-        <td><%= link_to 'Show', personal %></td>
-        <td><%= link_to 'Edit', edit_personal_path(personal) %></td>
-        <td><%= link_to 'Destroy', personal, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= personal.proyectos.pluck(:name).join(", ")%></td>
+        <td><%= form_with url: asignar_proyecto_personal_path(personal), method: :post, local: true do |form| %>
+            <%= select_tag :proyecto_id, options_for_select(@opciones) %>
+            <%= form.submit "Asignar", class: "btn btn-primary"%>
+            <% end %>
+        </td>
+        <td><%= link_to 'Show', personal, class: "btn btn-success" %></td>
+        <td><%= link_to 'Edit', edit_personal_path(personal),  class: "btn btn-warning" %></td>
+        <td><%= link_to 'Destroy', personal, method: :delete, data: { confirm: 'Are you sure?' },  class: "btn btn-danger" %></td>
       </tr>
     <% end %>
   </tbody>

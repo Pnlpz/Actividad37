@@ -1,11 +1,16 @@
 class PersonalsController < ApplicationController
-  before_action :set_personal, only: [:show, :edit, :update, :destroy]
+  before_action :set_personal, only: [:show, :edit, :update, :destroy, :asignar_proyecto]
 
   # GET /personals
   # GET /personals.json
   def index
     @personals = Personal.all
+    @opciones = Proyecto.all.map do |p|
+      [p.name, p.id]
+    end
   end
+
+
 
   # GET /personals/1
   # GET /personals/1.json
@@ -36,7 +41,11 @@ class PersonalsController < ApplicationController
       end
     end
   end
-
+    def asignar_proyecto
+      proyecto = Proyecto.find(params[:proyecto_id])
+      @personal.proyectos << proyecto
+      redirect_to personals_path
+    end
   # PATCH/PUT /personals/1
   # PATCH/PUT /personals/1.json
   def update
